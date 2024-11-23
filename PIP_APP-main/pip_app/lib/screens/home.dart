@@ -71,6 +71,7 @@ class _MantenedorState extends State<Mantenedor> {
   }
 }
 
+//----------------PANTALLA rrrreee----------------
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -156,6 +157,7 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
+//----------------PANTALLA ENVIAR----------------
 class Enviar extends StatelessWidget {
   const Enviar({super.key});
 
@@ -163,7 +165,16 @@ class Enviar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Enviar'),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        toolbarHeight: 64.0,
+        title: const Text(
+          'Enviar',
+          style: TextStyle(
+            fontFamily: 'Poppins-Regular',
+            fontSize: 23,
+            color: Colors.white, // El título será blanco
+          ),
+        ),
       ),
       body: const Center(
         child: Text('Enviar'),
@@ -172,6 +183,7 @@ class Enviar extends StatelessWidget {
   }
 }
 
+//----------------PANTALLA COTIZAR----------------
 class Cotizar extends StatelessWidget {
   const Cotizar({super.key});
 
@@ -206,6 +218,7 @@ class Cotizar extends StatelessWidget {
   }
 }
 
+//----------------PANTALLA PERFIL----------------
 class Perfil extends StatelessWidget {
   const Perfil({super.key});
 
