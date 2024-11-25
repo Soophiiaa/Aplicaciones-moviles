@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pip_app/screens/home.dart';
 
@@ -22,6 +23,8 @@ class _DetallesScreenState extends State<DetallesScreen> {
         _anchoController.text.isNotEmpty &&
         _altoController.text.isNotEmpty;
   }
+
+  String _tipoSeleccionado = 'Paquete'; // Valor predeterminado
 
   @override
   void dispose() {
@@ -123,8 +126,15 @@ class _DetallesScreenState extends State<DetallesScreen> {
               ],
             ),
 
-//--------------------------------DETALLES ENVIO-------
-            const SizedBox(height: 30),
+            //-------------VOLVER A DESTINO-----------
+            const SizedBox(height: 20),
+            const Text(
+              'Volver a Destino',
+              style: TextStyle(fontSize: 14, fontFamily: 'Poppins-Medium'),
+            ),
+
+            //------------------DETALLES ENVIO-------
+            const SizedBox(height: 16),
             const Text(
               'Detalles de envío',
               style: TextStyle(fontSize: 19, fontFamily: 'Poppins-Medium'),
@@ -133,9 +143,115 @@ class _DetallesScreenState extends State<DetallesScreen> {
               'Complete los detalles de su envío',
               style: TextStyle(fontSize: 16, fontFamily: 'Poppins-Regular'),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 8),
+            //---------------
 
-            // Campos de texto para peso, largo, ancho y alto (organizados en filas)
+            //-----------PAQUETE Y DOCUMENTO--------
+            const SizedBox(height: 0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        // Acción para el botón de paquete
+                        if (kDebugMode) {
+                          print('Paquete seleccionado');
+                        }
+                      },
+                      child: Column(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(
+                                18), // Esquinas redondeadas
+                            child: Image.asset(
+                              'lib/assets/images/paquete.png', // Ruta de tu imagen de paquete
+                              height: 110,
+                              width: 110,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(width: 60),
+                Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        // Acción para el botón de documento
+                        print('Documento seleccionado');
+                      },
+                      child: Column(
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(
+                                18), // Esquinas redondeadas
+                            child: Image.asset(
+                              'lib/assets/images/doc.png', // Ruta de tu imagen de documento
+                              height: 110,
+                              width: 110,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+
+//------RADIO BUTTOM PAQUETE Y DOC------
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Row(
+                  children: [
+                    Radio<String>(
+                      value: 'Paquete',
+                      groupValue: _tipoSeleccionado,
+                      onChanged: (value) {
+                        setState(() {
+                          _tipoSeleccionado = value!;
+                        });
+                      },
+                    ),
+                    const Text(
+                      'Paquete',
+                      style: TextStyle(
+                        fontFamily: 'Poppins-Regular',
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Radio<String>(
+                      value: 'Documento',
+                      groupValue: _tipoSeleccionado,
+                      onChanged: (value) {
+                        setState(() {
+                          _tipoSeleccionado = value!;
+                        });
+                      },
+                    ),
+                    const Text(
+                      'Documento',
+                      style: TextStyle(
+                        fontFamily: 'Poppins-Regular',
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            // ------CASILLAS DETALLES DEL ENVIO --------------
+            const SizedBox(height: 8),
             Row(
               children: [
                 Expanded(
@@ -193,7 +309,7 @@ class _DetallesScreenState extends State<DetallesScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 8),
 
             Row(
               children: [
@@ -258,7 +374,7 @@ class _DetallesScreenState extends State<DetallesScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 20),
 
             Center(
               child: SizedBox(
