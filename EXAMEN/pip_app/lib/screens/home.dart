@@ -4,7 +4,7 @@ import 'package:pip_app/components/appbar.dart'; // Acuérdate que modular estil
 import 'package:pip_app/components/formulario.dart';
 import 'package:pip_app/components/cotizarform.dart';
 
-// HOLA PROFE EL PROBLEMA ES QUE LA NAVIGATIONBAR NO SE VE, Y CUANDO SE HACE EL FORMULARIO EN ENVIAR CUANDO SE PONE SIGUIENTE NO SE VE LA NAVIGATION BAR
+//este es el codigo bueno !! :)
 
 class Mantenedor extends StatefulWidget {
   const Mantenedor({super.key});
@@ -29,6 +29,7 @@ class _MantenedorState extends State<Mantenedor> {
     });
   }
 
+//-----------BOTTOM BAR----------
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -294,9 +295,6 @@ class Enviar extends StatelessWidget {
               style: TextStyle(fontSize: 19, fontFamily: 'Poppins-Medium'),
             ),
             SizedBox(height: 8),
-
-            // Aquí podrías agregar una lista o un widget dinámico
-            // que muestre las cotizaciones creadas.
           ],
         ),
       ),
@@ -382,8 +380,107 @@ class Cotizar extends StatelessWidget {
               'Tus cotizaciones',
               style: TextStyle(fontSize: 19, fontFamily: 'Poppins-Medium'),
             ),
-            // Aquí podrías agregar una lista o un widget dinámico
-            // que muestre las cotizaciones creadas.
+            const SizedBox(height: 8),
+            //Respuesta formulario cotizaciones
+            // StreamBuilder para mostrar las cotizaciones en tiempo real
+            Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection(
+                        'CotizacionData') // Tu colección de cotizaciones
+                    .orderBy('timestamp',
+                        descending: true) // Ordenar por tiempo
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  }
+
+                  final cotizaciones = snapshot.data!.docs;
+
+                  return ListView.builder(
+                    itemCount: cotizaciones.length,
+                    itemBuilder: (context, index) {
+                      final cotizacion =
+                          cotizaciones[index].data() as Map<String, dynamic>;
+
+                      return Card(
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 16),
+                        elevation: 2,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        color: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Row(
+                            children: [
+                              // Imagen
+                              Container(
+                                width: 50,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: Colors.orange[100],
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: const Icon(
+                                  Icons.local_shipping,
+                                  color: Colors.orange,
+                                  size: 30,
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              // Texto en el centro
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Valor cotización \$${cotizacion['valor']}',
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      'Localidad origen: ${cotizacion['origen']}',
+                                      style: const TextStyle(fontSize: 14),
+                                    ),
+                                    Text(
+                                      'Localidad destino: ${cotizacion['destino']}',
+                                      style: const TextStyle(fontSize: 14),
+                                    ),
+                                    Text(
+                                      'Dimensiones: ${cotizacion['largo']} x ${cotizacion['ancho']} x ${cotizacion['alto']}',
+                                      style: const TextStyle(fontSize: 14),
+                                    ),
+                                    Text(
+                                      'Peso: ${cotizacion['peso']}',
+                                      style: const TextStyle(fontSize: 14),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const Icon(
+                                Icons.arrow_forward_ios,
+                                size: 16,
+                                color: Colors.grey,
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),
